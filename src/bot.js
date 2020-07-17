@@ -52,7 +52,7 @@ bot.on('message', async (message) => {
                 break;
             }
             case prefix + 'adicionar': {
-                message.channel.send('Por favor, descreva o que aconteceu.');
+                message.channel.send(`Por favor, patrão ${message.author}, descreva-me o que aconteceu.`);
                 let collector = new Discord.MessageCollector(message.channel, filter);
                 collector.on('collect', async (message, col) => {
                     if(message.content == prefix + 'finalizar'){
@@ -61,13 +61,12 @@ bot.on('message', async (message) => {
                 });
 
                 collector.on('end', collected1 => {
-                    message.channel.send('Você finalizou a ata. Deseja prosseguir' +
-                    ' ou cancelar?');
+                    message.channel.send(`Você finalizou a ata. Deseja prosseguir ou cancelar, patrão ${message.author}?`);
                     let collector2 = new Discord.MessageCollector(message.channel, filter);
                     collector2.on('collect', async (message, col) => {
                           switch(message.content){
                           case 'cancelar': {
-                            message.channel.send('Você cancelou o procedimento.');
+                            message.channel.send('Missão abortada.');
                             collector.stop();
                             collector2.stop();
                             break;
@@ -76,13 +75,13 @@ bot.on('message', async (message) => {
                             collected1.forEach(msg => arrayDescription.push(msg.content));
                             let description = arrayDescription.join('\n');
                             let participants;
-                            message.channel.send('Quais foram os participantes?')
+                            message.channel.send('Quais foram os outros ?')
                             let collector3 = new Discord.MessageCollector(message.channel, filter, {max: 2});
                             collector3.on('collect', async (message, col) => {
                                 participants = message.content;
-                                await message.channel.send('Criando a ata...');
+                                await message.channel.send('Estou organizando a ata e preparando para enviá-la. É possível que demore alguns segundos, você consegue esperar.');
                                 await client.adicionarAta(description, participants);
-                                await message.channel.send('Ata criada.');
+                                await message.channel.send('Tá na mão, meu patrão.');
                                 collector3.stop();
                                 collector.stop();
                             });
