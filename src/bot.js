@@ -2,13 +2,20 @@ require('dotenv').config();
 const Discord = require('discord.js');
 const bot = new Discord.Client();
 const TOKEN = process.env.TOKEN;
+console.log(TOKEN);
 const client = require('./client');
 const prefix = '!';
 
 bot.login(TOKEN);
 
-bot.on('ready', () => {
+bot.on('ready', async () => {
+
     console.info(`Logged in as ${bot.user.tag}!`);
+
+    // Criando um atributo para o objeto Bot, 
+    // que utilizará a mesma conexão do puppeteer.
+    this.loggedBrowser = await client.login();
+
 });
 
 bot.on('message', async (message) => {
@@ -37,7 +44,7 @@ bot.on('message', async (message) => {
                     collector2.on('collect', async (message, col) => {
                         participants = message.content;
                         message.channel.send('Criando a ata...');
-                        await client.adicionarAta(description, participants);
+                        await client.adicionarAta(this.loggedBrowser, description, participants);
                         collector2.stop();
                         message.channel.send('Ata criada!');
                     });
@@ -47,7 +54,7 @@ bot.on('message', async (message) => {
             }
             case prefix + 'print': {
                 message.channel.send('Entrando na página e tirando print...');
-                await client.printTelaAta();
+                await client.printTelaAta(this.loggedBrowser);
                 message.channel.send('Print tirado.', {files: ['../print.png']});
                 break;
             }
@@ -80,7 +87,7 @@ bot.on('message', async (message) => {
                             collector3.on('collect', async (message, col) => {
                                 participants = message.content;
                                 await message.channel.send('Estou organizando a ata e preparando para enviá-la. É possível que demore alguns segundos, você consegue esperar.');
-                                await client.adicionarAta(description, participants);
+                                await client.adicionarAta(this.loggedBrowser, description, participants);
                                 await message.channel.send('Tá na mão, meu patrão.');
                                 collector3.stop();
                                 collector.stop();
