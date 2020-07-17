@@ -1,12 +1,12 @@
 {
-  "name": "discord-bot",
+  "name": "bot-txm-ata",
   "version": "1.0.0",
-  "description": "Discord bot for SitePoint",
-  "main": "index.js",
+  "description": "Bot do Discord para utilidades relacionadas a plataforma TXM.",
+  "main": "/src/bot.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ./src/bot.js"
   },
-  "author": "Michiel Mulders",
+  "authors": ["Joseph Alexandre", "Lucas Lima"],
   "license": "ISC",
   "dependencies": {
     "discord.js": "^11.5.1",

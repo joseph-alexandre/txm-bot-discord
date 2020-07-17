@@ -23,7 +23,7 @@ bot.on('message', async (message) => {
 
     if(message.content.startsWith(prefix)){
         switch(message.content){
-            case prefix + 'adicionar':{
+            case prefix + 'cadastrar':{
                 message.channel.send('Qual a descrição da ata?');
                 let description;
                 let participants;
@@ -44,6 +44,12 @@ bot.on('message', async (message) => {
                 });
                 break;
             }
+            case prefix + 'print': {
+                message.channel.send('Entrando na página e tirando print...');
+                await client.printTelaAta();
+                message.channel.send('Print tirado.', {files: ['../print.png']});
+            }
+            break;
         }
     }}
 );
