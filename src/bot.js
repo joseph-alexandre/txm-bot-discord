@@ -46,44 +46,4 @@ bot.on('message', async (message) => {
             }
         }
     }}
-    
-    
-
-    
-    // let description;
-    // let participants;
-    // if (msg.content.startsWith('!adicionar')) {
-    //     msg.reply('Qual a descrição da ata?');
-    //     if(!msg.content.startsWith('!adicionar')){
-    //         description = msg.content;
-    //     } else if(msg.content === 'Cancelar'){
-            
-    //     }
-        
-    //     msg.channel.send('teste');
-    //     console.log(msg.content);
-        // if(msg.content !== undefined){
-        //  description = msg.content;
-        // } else {
-        //     msg.channel.send('Você precisa informar a descrição da ata.');
-        // }
-        // msg.reply('Quais foram os participantes?');
-        // if(msg.content !== ''){
-        //     participants = msg.content;
-        // } else {
-        //     msg.channel.send('Você precisa informar os participantes.');
-        // }
-        // if(description !== '' && participants !== ''){
-        //     client.adicionarAta(description, participants);
-        //     msg.channel.send('Ata adicionada!');
-    //     // }
-
-    // } else if (msg.content.startsWith('!kick')) {
-    //     if (msg.mentions.users.size) {
-    //         const taggedUser = msg.mentions.users.first();
-    //         msg.channel.send(`You wanted to kick: ${taggedUser.username}`);
-    //     } else {
-    //         msg.reply('Please tag a valid user!');
-    //     }
-    // }
 );
