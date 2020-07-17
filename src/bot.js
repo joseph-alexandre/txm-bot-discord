@@ -12,6 +12,7 @@ bot.on('ready', () => {
 });
 
 bot.on('message', async (message) => {
+    const arrayDescription = [];
 
     if(message.author.bot){
         return;
@@ -22,16 +23,16 @@ bot.on('message', async (message) => {
 
 
     if(message.content.startsWith(prefix)){
+        const filter = m => !m.author.bot
         switch(message.content){
             case prefix + 'cadastrar':{
                 message.channel.send('Qual a descrição da ata?');
                 let description;
                 let participants;
-                let filter = m => !m.author.bot
                 let collector = new Discord.MessageCollector(message.channel, filter, {max: 2, time: 10000});
                 collector.on('collect', (message, col) => {
                     description = message.content;
-                    message.channel.send('Quais são os participantes?')
+                    message.channel.send('Quais foram os participantes?')
                     let collector2 = new Discord.MessageCollector(message.channel, filter, {max: 2, time: 10000});
                     collector2.on('collect', async (message, col) => {
                         participants = message.content;
@@ -48,8 +49,55 @@ bot.on('message', async (message) => {
                 message.channel.send('Entrando na página e tirando print...');
                 await client.printTelaAta();
                 message.channel.send('Print tirado.', {files: ['../print.png']});
+                break;
             }
-            break;
+            case prefix + 'adicionar': {
+                message.channel.send('Por favor, descreva o que aconteceu.');
+                let collector = new Discord.MessageCollector(message.channel, filter);
+                collector.on('collect', async (message, col) => {
+                    if(message.content == prefix + 'finalizar'){
+                        collector.stop();
+                    }
+                });
+
+                collector.on('end', collected1 => {
+                    message.channel.send('Você finalizou a ata. Deseja prosseguir' +
+                    ' ou cancelar?');
+                    let collector2 = new Discord.MessageCollector(message.channel, filter);
+                    collector2.on('collect', async (message, col) => {
+                          switch(message.content){
+                          case 'cancelar': {
+                            message.channel.send('Você cancelou o procedimento.');
+                            collector.stop();
+                            collector2.stop();
+                            break;
+                        } case 'prosseguir': {
+                            collector2.stop();
+                            collected1.forEach(msg => arrayDescription.push(msg.content));
+                            let description = arrayDescription.join('\n');
+                            let participants;
+                            message.channel.send('Quais foram os participantes?')
+                            let collector3 = new Discord.MessageCollector(message.channel, filter, {max: 2});
+                            collector3.on('collect', async (message, col) => {
+                                participants = message.content;
+                                await message.channel.send('Criando a ata...');
+                                await client.adicionarAta(description, participants);
+                                await message.channel.send('Ata criada.');
+                                collector3.stop();
+                                collector.stop();
+                            });
+                            break;
+                        } 
+                        default: {
+                            message.channel.send('Comando desconhecido. Por favor, escolha entre prosseguir ou cancelar o procedimento.');
+                        }
+                    }
+                    });
+                });
+            }
+            
         }
     }}
-);
+
+    );
+
