@@ -1,0 +1,6 @@
+[
+  {
+    "question": "Senhor(a)! Deseja **prosseguir** com esta ação ou **descartar** a ata?",
+    "answers" : ["prosseguir", "descartar"]
+  }
+]
