@@ -5,6 +5,7 @@ const TOKEN = process.env.TOKEN;
 console.log(TOKEN);
 const client = require('./client');
 const prefix = '!';
+const frases = require('./motivation.json');
 
 bot.login(TOKEN);
 
@@ -58,6 +59,11 @@ bot.on('message', async (message) => {
                 message.channel.send('Print tirado.', {files: ['../print.png']});
                 break;
             }
+            case prefix + 'motivar':{
+                let premiada = frases[Math.floor(Math.random() * frases.length)].replace('${0}', message.author);
+                message.channel.send(premiada);
+                break;
+              }
             case prefix + 'adicionar': {
                 message.channel.send(`Por favor, patrão ${message.author}, descreva-me o que aconteceu.`);
                 let collector = new Discord.MessageCollector(message.channel, filter);
