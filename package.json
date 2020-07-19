@@ -1,5 +1,5 @@
 {
-  "name": "bot-txm-ata",
+  "name": "bot-txm-discord",
   "version": "1.0.0",
   "description": "Bot do Discord para utilidades relacionadas a plataforma TXM.",
   "main": "/src/bot.js",
